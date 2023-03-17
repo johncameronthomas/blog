@@ -1,0 +1,16 @@
+$def with (failed_login)
+$var title: Login
+$if failed_login:
+    <p>Invalid credentials. Try again.</p>
+<form method="post">
+    <p><strong>Login</strong></p>
+    <p>
+        <label>Username</label>
+        <input type="text" name="username" required=""></input>
+    </p>
+    <p>
+        <label>Password</label>
+        <input type="password" name="password" required=""></input>
+    </p>
+    <button>Send</button>
+</form>

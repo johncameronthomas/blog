@@ -1,0 +1,10 @@
+$def with (post, id, logged_in)
+$var title: Post
+<article>
+    <h2>$post[0]</h2>
+    $:post[1]
+    <p>$post[2]</p>
+</article>
+$if logged_in:
+    <a href="/edit_post/$id">Edit</a><br>
+    <a href="/delete_post/$id">Delete</a>
