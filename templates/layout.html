@@ -1,4 +1,4 @@
-$def with (content)
+$def with (content, logged_in)
 <html>
     <head>
         <title>$content.title</title>
@@ -11,6 +11,11 @@ $def with (content)
                 <a href="/about">About</a>
                 <a href="/posts">Posts</a>
                 <a href="/contact">Contact</a>
+                $if logged_in:
+                    <a href="/logout">Logout</a>
+                    <a href="/create_post">Create Post</a>
+                $else:
+                    <a href="/login">Login</a>
             </nav>
             <h1>johncameronthomas.com</h1>
             <p>A blog about software development, engineering, and mathematics!</p>
@@ -20,9 +25,6 @@ $def with (content)
         </main>
         <footer>
             <p>Created by John Cameron Thomas.</p>
-            <a href="/login">Login</a>
-            <a href="/logout">Logout</a>
-            <a href="/create_post">Create Post</a>
         </footer>
     </body>
 </html>
