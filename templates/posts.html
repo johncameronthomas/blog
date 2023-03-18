@@ -2,6 +2,6 @@ $def with (posts)
 $var title: Posts
 $for id in posts.keys():
     <article>
-        <h2><a href="/post/$id">$posts[id][0]</a></h2>
-        <p>$posts[id][2]</p>
+        <h2><a href="/post/$id">$posts[id]['title']</a></h2>
+        <small><p>$posts[id]['date']</p></small>
     </article>

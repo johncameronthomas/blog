@@ -1,10 +1,10 @@
-$def with (post, id, logged_in)
+$def with (post, logged_in, id)
 $var title: Post
 <article>
-    <h2>$post[0]</h2>
-    $:post[1]
-    <p>$post[2]</p>
+    <h2>$post['title']</h2>
+    $:post['content']
+    <small><p>$post['date']</p></small>
 </article>
 $if logged_in:
-    <a href="/edit_post/$id">Edit</a><br>
+    <a href="/edit_post/$id">Edit</a>
     <a href="/delete_post/$id">Delete</a>

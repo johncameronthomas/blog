@@ -9,7 +9,7 @@ class database:
         try:
             open(self.path, 'x').close()
             f = open(self.path, 'w')
-            f.write('{}')
+            f.write('None')
             f.close()
         except:
             pass
@@ -24,25 +24,36 @@ class database:
     def loop(self):
         while not self.stop_loop:
             for index, (id, action, arg) in enumerate(self.stack):
-                f = open(self.path, 'r+')
-                try:
-                    data = json.load(f)
-                except:
-                    data = {}
+                f = open(self.path, 'r')
+                data = json.load(f)
                 f.close()
                 match action:
                     case 0: # dump
                         self.results.append((id, data))
                     case 1: # read
-                        self.results.append((id, data[arg]))
-                    case 2: # update
-                        data[arg[0]] = arg[1]
+                        keys = arg
+                        for key in keys:
+                            data = data[key]
+                        self.results.append((id, data))
+                    case 2: # write
+                        value = arg[0]
+                        keys = arg[1]
+                        exec_str = 'data'
+                        for key in keys:
+                            exec_str += "['{}']".format(key)
+                        exec_str += '=value'
+                        exec(exec_str)
                         f = open(self.path, 'w')
                         json.dump(data, f)
                         f.close()
                         self.results.append((id, None))
                     case 3: # remove
-                        data.pop(arg)
+                        keys = arg
+                        exec_str = 'data'
+                        for key in keys[0:-1]:
+                            exec_str += "['{}']".format(key)
+                        exec_str += '.pop(keys[-1])'
+                        exec(exec_str)
                         f = open(self.path, 'w')
                         json.dump(data, f)
                         f.close()
@@ -60,15 +71,15 @@ class database:
                 if result_id == id:
                     self.results.pop(index)
                     return result
-                
+
     def dump(self):
         return self.perform_action(0, None)
+                
+    def read(self, *keys):
+        return self.perform_action(1, keys)
     
-    def read(self, key):
-        return self.perform_action(1, key)
+    def write(self, value, *keys):
+        return self.perform_action(2, (value, keys))
     
-    def update(self, key, value):
-        return self.perform_action(2, (key, value))
-    
-    def remove(self, key):
-        return self.perform_action(3, key)
+    def remove(self, *keys):
+        return self.perform_action(3, keys)
