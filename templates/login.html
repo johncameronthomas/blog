@@ -1,9 +1,9 @@
 $def with (failed_login)
 $var title: Login
-$if failed_login:
-    <p>Invalid credentials. Try again.</p>
 <form method="post">
-    <p><strong>Login</strong></p>
+    $if failed_login:
+        <p>Invalid credentials. Try again.</p>
+    <h3>Login</h3>
     <p>
         <label>Username</label>
         <input type="text" name="username" required=""></input>

@@ -1,2 +1,24 @@
+$def with (id, post)
 $var title: Home
-<p>Home</p>
+<section>
+    <h3>Welcome!</h3>
+    <p>Are you a software developer, engineer, and/or mathematician? If so, you'll love this blog! Check out the 'About' page for more information. Thank you for visiting!</p>
+</section>
+<section>
+    <h3>Github Contributions Graph</h3>
+    <img src="http://ghchart.rshah.org/thomasjohn314" alt="thomasjohn314's github contributions graph."></img>
+    <p>Github: <a href="https://github.com/thomasjohn314">thomasjohn314</a></p>
+</section>
+<section>
+    <h3>Spotify Playlist</h3>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6o9Bx3rta9wTDasV00hLum?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    <p>Spotify: <a href="https://open.spotify.com/user/31wsgttdldp5engf2z7vwsqqwde4">johncameronthomas</a></p>
+</section>
+<section>
+    <h3>Latest Post</h3>
+    <article>
+        <h2><a href="/post/$id">$post['title']</a></h2>
+        $:post['content']
+        <small><p>$post['date']</p></small>
+    </article>
+</section>
