@@ -23,42 +23,45 @@ class database:
 
     def loop(self):
         while not self.stop_loop:
-            for index, (id, action, arg) in enumerate(self.stack):
-                f = open(self.path, 'r')
-                data = json.load(f)
-                f.close()
-                match action:
-                    case 0: # dump
-                        self.results.append((id, data))
-                    case 1: # read
-                        keys = arg
-                        for key in keys:
-                            data = data[key]
-                        self.results.append((id, data))
-                    case 2: # write
-                        value = arg[0]
-                        keys = arg[1]
-                        exec_str = 'data'
-                        for key in keys:
-                            exec_str += "['{}']".format(key)
-                        exec_str += '=value'
-                        exec(exec_str)
-                        f = open(self.path, 'w')
-                        json.dump(data, f)
-                        f.close()
-                        self.results.append((id, None))
-                    case 3: # remove
-                        keys = arg
-                        exec_str = 'data'
-                        for key in keys[0:-1]:
-                            exec_str += "['{}']".format(key)
-                        exec_str += '.pop(keys[-1])'
-                        exec(exec_str)
-                        f = open(self.path, 'w')
-                        json.dump(data, f)
-                        f.close()
-                        self.results.append((id, None))
-                self.stack.pop(index)
+            try:
+                for index, (id, action, arg) in enumerate(self.stack):
+                    f = open(self.path, 'r')
+                    data = json.load(f)
+                    f.close()
+                    match action:
+                        case 0: # dump
+                            self.results.append((id, data))
+                        case 1: # read
+                            keys = arg
+                            for key in keys:
+                                data = data[key]
+                            self.results.append((id, data))
+                        case 2: # write
+                            value = arg[0]
+                            keys = arg[1]
+                            exec_str = 'data'
+                            for key in keys:
+                                exec_str += "['{}']".format(key)
+                            exec_str += '=value'
+                            exec(exec_str)
+                            f = open(self.path, 'w')
+                            json.dump(data, f)
+                            f.close()
+                            self.results.append((id, None))
+                        case 3: # remove
+                            keys = arg
+                            exec_str = 'data'
+                            for key in keys[0:-1]:
+                                exec_str += "['{}']".format(key)
+                            exec_str += '.pop(keys[-1])'
+                            exec(exec_str)
+                            f = open(self.path, 'w')
+                            json.dump(data, f)
+                            f.close()
+                            self.results.append((id, None))
+                    self.stack.pop(index)
+            except:
+                pass
 
     def perform_action(self, action, arg):
         if len(self.stack) > 0:
