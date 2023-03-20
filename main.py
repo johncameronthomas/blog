@@ -42,10 +42,7 @@ class index:
 
 class home:
     def GET(self):
-        posts = db.read('posts')
-        id = tuple(posts.keys())[-1]
-        post = posts[id]
-        return render.layout(render.home(id, post), session.logged_in)
+        return render.layout(render.home(), session.logged_in)
 
 class about:
     def GET(self):
