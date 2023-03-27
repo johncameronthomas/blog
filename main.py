@@ -1,9 +1,9 @@
 import web
 import time
+from asynchronous_database import database
 
-from simple_database.remote import client
-
-c = client(('localhost', 8080))
+web.db = database('database.json')
+web.db.start()
 web.config.debug = False
 urls = (
     '/static/(.+)', 'static',
@@ -48,7 +48,7 @@ class about:
 
 class posts:
     def GET(self):
-        posts = c.read('posts')
+        posts = web.db.read('posts')
         if len(posts) == 0:
             return render.layout(render.error('<p>No posts found.</p>'), session.logged_in)
         else:
@@ -72,7 +72,7 @@ class login:
             data = web.input()
             username = data['username']
             password = data['password']
-            users = c.read('users')
+            users = web.db.read('users')
             if (username in users) and (users[username] == password):
                 session.logged_in = True
                 return render.layout(render.success('<p>You have been logged in.</p>'), session.logged_in)
@@ -89,7 +89,7 @@ class logout:
 
 class post:
     def GET(self, id):
-        posts = c.read('posts')
+        posts = web.db.read('posts')
         if id in posts:
             post = posts[id]
             return render.layout(render.post(post, session.logged_in, id), session.logged_in)
@@ -107,14 +107,14 @@ class create_post:
         if session.logged_in:
             data = web.input()
             id = data['id']
-            posts = c.read('posts')
+            posts = web.db.read('posts')
             if id in posts:
                 return render.layout(render.error('<p>This id is already in use.</p>'), session.logged_in)
             else:
                 title = data['title']
                 content = data['content']
                 date = time.strftime('%X %x %Z')
-                c.write({'title': title, 'content': content, 'date': date}, 'posts', id)
+                web.db.write({'title': title, 'content': content, 'date': date}, 'posts', id)
                 return render.layout(render.success('<p>Post created!</p><a href="/post/{}">Link</a>'.format(id)), session.logged_in)
         else:
             return render.layout(render.error("<p>You must be logged in to create a post.</p>"), session.logged_in)
@@ -123,7 +123,7 @@ class edit_post:
     def GET(self, id):
         if session.logged_in:
             try:
-                post = c.read('posts', id)
+                post = web.db.read('posts', id)
             except:
                 return web.notfound()
             else:
@@ -136,7 +136,7 @@ class edit_post:
     def POST(self, id):
         if session.logged_in:
             try:
-                post = c.read('posts', id)
+                post = web.db.read('posts', id)
             except:
                 return web.notfound()
             else:
@@ -144,7 +144,7 @@ class edit_post:
                 title = data['title']
                 content = data['content']
                 date = time.strftime('%X %x %Z')
-                c.write({'title': title, 'content': content, 'date': date}, 'posts', id)
+                web.db.write({'title': title, 'content': content, 'date': date}, 'posts', id)
                 return render.layout(render.success('<p>Post edited!</p><a href="/post/{}">Link</a>'.format(id)), session.logged_in)
         else:
             return render.layout(render.error("<p>You must be logged in to edit a post.</p>"), session.logged_in)
@@ -152,9 +152,9 @@ class edit_post:
 class delete_post:
     def GET(self, id):
         if session.logged_in:
-            posts = c.read('posts')
+            posts = web.db.read('posts')
             if id in posts:
-                c.remove('posts', id)
+                web.db.remove('posts', id)
                 return render.layout(render.success('<p>Post deleted.</p>'), session.logged_in)
             else:
                 return render.layout(render.error("<p>This post doesn't exist.</p>"), session.logged_in)
