@@ -1,6 +1,6 @@
 import web
 import time
-from asynchronous_database import database
+from simple_database.local import database
 
 web.db = database('database.json')
 web.db.start()
