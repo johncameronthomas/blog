@@ -1,1 +1,1 @@
-{"posts": {}, "users": {"admin": "password"}}
+{"posts": {"test": {"title": "test", "content": "test", "date": "00:22:42 03/27/23 EDT"}, "test2": {"title": "hello", "content": "this is a test", "date": "00:27:42 03/27/23 EDT"}}, "users": {"test": "password"}}

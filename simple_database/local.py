@@ -1,5 +1,5 @@
-import json
 import threading
+import json
 
 class database:
     def __init__(self, path):
@@ -9,7 +9,7 @@ class database:
         try:
             open(self.path, 'x').close()
             f = open(self.path, 'w')
-            f.write('None')
+            f.write('{}')
             f.close()
         except:
             pass
@@ -77,12 +77,12 @@ class database:
 
     def dump(self):
         return self.perform_action(0, None)
-                
+
     def read(self, *keys):
         return self.perform_action(1, keys)
-    
+
     def write(self, value, *keys):
         return self.perform_action(2, (value, keys))
-    
+
     def remove(self, *keys):
         return self.perform_action(3, keys)
