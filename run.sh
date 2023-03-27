@@ -1,1 +1,1 @@
-source venv/bin/activate && gunicorn -b 0.0.0.0:80 main:wsgi_app
+source venv/bin/activate && python db.py & source venv/bin/activate && gunicorn -b 0.0.0.0:80 main:wsgi_app
