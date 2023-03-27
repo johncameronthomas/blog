@@ -1,5 +1,6 @@
 import web
 import time
+
 from simple_database.local import database
 
 web.db = database('database.json')
