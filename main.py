@@ -1,9 +1,9 @@
 import web
 import time
 
-from simple_database.local import database
+from async_db import Database
 
-web.db = database('database.json')
+web.db = Database('database.json')
 web.db.start()
 web.config.debug = False
 urls = (
