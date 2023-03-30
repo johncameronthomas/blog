@@ -144,7 +144,7 @@ class edit_post:
                 data = web.input()
                 title = data['title']
                 content = data['content']
-                date = time.strftime('%X %x %Z')
+                date = data['data']
                 web.db.write({'title': title, 'content': content, 'date': date}, 'posts', id)
                 return render.layout(render.success('<p>Post edited!</p><a href="/post/{}">Link</a>'.format(id)), session.logged_in)
         else:
