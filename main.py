@@ -144,8 +144,8 @@ class edit_post:
                 data = web.input()
                 title = data['title']
                 content = data['content']
-                date = data['data']
-                web.db.write({'title': title, 'content': content, 'date': date}, 'posts', id)
+                web.db.write(title, 'posts', id, 'title')
+                web.db.write(content, 'posts', id, 'content')
                 return render.layout(render.success('<p>Post edited!</p><a href="/post/{}">Link</a>'.format(id)), session.logged_in)
         else:
             return render.layout(render.error("<p>You must be logged in to edit a post.</p>"), session.logged_in)
